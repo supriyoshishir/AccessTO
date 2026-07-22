@@ -76,11 +76,14 @@ export interface CkanDatastoreSearchResult {
 /**
  * The app's normalized record shape, produced from raw DatastoreRecords by
  * the Phase 4 normalizer. Declared here so every phase shares one contract.
+ *
+ * `lat`/`lng` are nullable: a row without usable coordinates (FR-4.3) still
+ * becomes a Place — shown in the list, just excluded from the map.
  */
 export interface Place {
   id: string;
   name: string;
-  lat: number;
-  lng: number;
+  lat: number | null;
+  lng: number | null;
   fields: Record<string, unknown>;
 }
