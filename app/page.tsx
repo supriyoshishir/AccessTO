@@ -3,16 +3,34 @@
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import DatasetResults from "@/components/DatasetResults";
+import ResultsList from "@/components/ResultsList";
+import DetailPanel from "@/components/DetailPanel";
 import { useDatasetSearch } from "@/hooks/useDatasetSearch";
-import type { CkanPackage } from "@/lib/types";
+import { useDatasetRecords } from "@/hooks/useDatasetRecords";
+import type { CkanPackage, Place } from "@/lib/types";
 
 export default function Home() {
   const { data, loading, error, isEmpty, search, retry } = useDatasetSearch();
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedPackageId, setSelectedPackageId] = useState<string | null>(null);
+  const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
 
-  function handleSelect(pkg: CkanPackage) {
-    setSelectedId(pkg.id);
+  const {
+    places,
+    loading: recordsLoading,
+    error: recordsError,
+  } = useDatasetRecords(selectedPackageId);
+
+  function handleSelectPackage(pkg: CkanPackage) {
+    setSelectedPackageId(pkg.id);
+    // A previously selected record belongs to the old dataset's records.
+    setSelectedPlaceId(null);
   }
+
+  function handleSelectPlace(place: Place) {
+    setSelectedPlaceId(place.id);
+  }
+
+  const selectedPlace = places?.find((place) => place.id === selectedPlaceId) ?? null;
 
   return (
     <div className="flex flex-col gap-6">
@@ -29,10 +47,18 @@ export default function Home() {
         loading={loading}
         error={error}
         isEmpty={isEmpty}
-        selectedId={selectedId}
-        onSelect={handleSelect}
+        selectedId={selectedPackageId}
+        onSelect={handleSelectPackage}
         onRetry={retry}
       />
+      <ResultsList
+        places={places}
+        loading={recordsLoading}
+        error={recordsError}
+        selectedId={selectedPlaceId}
+        onSelect={handleSelectPlace}
+      />
+      <DetailPanel place={selectedPlace} />
     </div>
   );
 }
