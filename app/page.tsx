@@ -5,6 +5,7 @@ import SearchBar from "@/components/SearchBar";
 import DatasetResults from "@/components/DatasetResults";
 import ResultsList from "@/components/ResultsList";
 import DetailPanel from "@/components/DetailPanel";
+import MapView from "@/components/MapView";
 import { useDatasetSearch } from "@/hooks/useDatasetSearch";
 import { useDatasetRecords } from "@/hooks/useDatasetRecords";
 import type { CkanPackage, Place } from "@/lib/types";
@@ -51,14 +52,25 @@ export default function Home() {
         onSelect={handleSelectPackage}
         onRetry={retry}
       />
-      <ResultsList
-        places={places}
-        loading={recordsLoading}
-        error={recordsError}
-        selectedId={selectedPlaceId}
-        onSelect={handleSelectPlace}
-      />
-      <DetailPanel place={selectedPlace} />
+      <div className="flex flex-col gap-6 lg:flex-row">
+        <div className="lg:w-1/2">
+          <MapView
+            places={places}
+            selectedId={selectedPlaceId}
+            onSelect={handleSelectPlace}
+          />
+        </div>
+        <div className="flex flex-col gap-6 lg:w-1/2">
+          <ResultsList
+            places={places}
+            loading={recordsLoading}
+            error={recordsError}
+            selectedId={selectedPlaceId}
+            onSelect={handleSelectPlace}
+          />
+          <DetailPanel place={selectedPlace} />
+        </div>
+      </div>
     </div>
   );
 }
