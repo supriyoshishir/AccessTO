@@ -5,11 +5,13 @@ import {
   APILoadingStatus,
   APIProvider,
   AdvancedMarker,
+  ColorScheme,
   Map,
   Pin,
   useApiLoadingStatus,
   useMap,
 } from "@vis.gl/react-google-maps";
+import { useTheme } from "@/context/ThemeContext";
 import type { Place } from "@/lib/types";
 
 const TORONTO_CENTER = { lat: 43.6532, lng: -79.3832 };
@@ -27,7 +29,7 @@ function hasCoordinates(place: Place): place is Place & { lat: number; lng: numb
 
 function MapUnavailableNotice() {
   return (
-    <div className="rounded-md border border-amber-300 bg-amber-50 p-4 text-amber-900">
+    <div className="rounded-md border border-amber-300 bg-amber-50 p-4 text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-200">
       Map unavailable right now — use the list below to browse records.
     </div>
   );
@@ -88,6 +90,7 @@ function MapContent({
   mapId,
 }: MapMarkersProps & { mapId: string }) {
   const status = useApiLoadingStatus();
+  const { theme } = useTheme();
 
   if (status === APILoadingStatus.FAILED || status === APILoadingStatus.AUTH_FAILURE) {
     return <MapUnavailableNotice />;
@@ -99,6 +102,7 @@ function MapContent({
       defaultCenter={TORONTO_CENTER}
       defaultZoom={DEFAULT_ZOOM}
       gestureHandling="greedy"
+      colorScheme={theme === "dark" ? ColorScheme.DARK : ColorScheme.LIGHT}
     >
       <MapMarkers places={places} selectedId={selectedId} onSelect={onSelect} />
     </Map>
@@ -116,7 +120,7 @@ export default function MapView({ places, selectedId, onSelect }: MapViewProps) 
   if (!apiKey || !mapId) {
     return (
       <div className="flex flex-col gap-2">
-        <p className="text-sm text-slate-600">{summary}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400">{summary}</p>
         <MapUnavailableNotice />
       </div>
     );
@@ -124,11 +128,11 @@ export default function MapView({ places, selectedId, onSelect }: MapViewProps) 
 
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-sm text-slate-600">{summary}</p>
+      <p className="text-sm text-slate-600 dark:text-slate-400">{summary}</p>
       <div
         role="region"
         aria-label={summary}
-        className="h-96 overflow-hidden rounded-md border border-slate-200"
+        className="h-96 overflow-hidden rounded-md border border-slate-200 dark:border-slate-700"
       >
         <APIProvider apiKey={apiKey}>
           <MapContent

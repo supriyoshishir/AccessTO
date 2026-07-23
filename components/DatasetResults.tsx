@@ -59,18 +59,20 @@ export default function DatasetResults({
       </p>
 
       {!hasSearched && (
-        <p className="text-slate-600">Search for a dataset to get started.</p>
+        <p className="text-slate-600 dark:text-slate-400">
+          Search for a dataset to get started.
+        </p>
       )}
 
-      {loading && <p className="text-slate-600">Searching…</p>}
+      {loading && <p className="text-slate-600 dark:text-slate-400">Searching…</p>}
 
       {!loading && error && (
-        <div className="rounded-md border border-red-300 bg-red-50 p-4 text-red-900">
+        <div className="rounded-md border border-red-300 bg-red-50 p-4 text-red-900 dark:border-red-800 dark:bg-red-950 dark:text-red-200">
           <p>{error}</p>
           <button
             type="button"
             onClick={onRetry}
-            className="mt-2 rounded-md border border-red-700 px-3 py-1.5 font-medium text-red-800 hover:bg-red-100"
+            className="mt-2 rounded-md border border-red-700 px-3 py-1.5 font-medium text-red-800 hover:bg-red-100 dark:border-red-500 dark:text-red-300 dark:hover:bg-red-900"
           >
             Retry
           </button>
@@ -78,7 +80,9 @@ export default function DatasetResults({
       )}
 
       {!loading && !error && isEmpty && (
-        <p className="text-slate-600">No datasets match your search.</p>
+        <p className="text-slate-600 dark:text-slate-400">
+          No datasets match your search.
+        </p>
       )}
 
       {!loading && !error && packages && packages.length > 0 && (
@@ -93,15 +97,15 @@ export default function DatasetResults({
                   onClick={() => onSelect(pkg)}
                   className={`w-full rounded-md border p-3 text-left ${
                     isSelected
-                      ? "border-blue-700 bg-blue-50"
-                      : "border-slate-200 bg-white hover:bg-slate-50"
+                      ? "border-blue-700 bg-blue-50 dark:border-blue-400 dark:bg-blue-950"
+                      : "border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
                   }`}
                 >
-                  <span className="block font-medium text-slate-900">
+                  <span className="block font-medium text-slate-900 dark:text-slate-100">
                     {isSelected && <span aria-hidden="true">✓ </span>}
                     {pkg.title || pkg.name}
                   </span>
-                  <span className="mt-1 block text-sm text-slate-600">
+                  <span className="mt-1 block text-sm text-slate-600 dark:text-slate-400">
                     {summarize(pkg.notes)}
                   </span>
                 </button>

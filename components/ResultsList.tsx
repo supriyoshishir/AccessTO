@@ -45,19 +45,23 @@ export default function ResultsList({
       </p>
 
       {!hasLoaded && (
-        <p className="text-slate-600">Select a dataset above to see its records.</p>
+        <p className="text-slate-600 dark:text-slate-400">
+          Select a dataset above to see its records.
+        </p>
       )}
 
-      {loading && <p className="text-slate-600">Loading records…</p>}
+      {loading && <p className="text-slate-600 dark:text-slate-400">Loading records…</p>}
 
       {!loading && error && (
-        <p className="rounded-md border border-red-300 bg-red-50 p-4 text-red-900">
+        <p className="rounded-md border border-red-300 bg-red-50 p-4 text-red-900 dark:border-red-800 dark:bg-red-950 dark:text-red-200">
           {error}
         </p>
       )}
 
       {!loading && !error && places && places.length === 0 && (
-        <p className="text-slate-600">No location records found for this dataset.</p>
+        <p className="text-slate-600 dark:text-slate-400">
+          No location records found for this dataset.
+        </p>
       )}
 
       {!loading && !error && places && places.length > 0 && (
@@ -73,16 +77,16 @@ export default function ResultsList({
                   onClick={() => onSelect(place)}
                   className={`w-full rounded-md border p-3 text-left ${
                     isSelected
-                      ? "border-blue-700 bg-blue-50"
-                      : "border-slate-200 bg-white hover:bg-slate-50"
+                      ? "border-blue-700 bg-blue-50 dark:border-blue-400 dark:bg-blue-950"
+                      : "border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
                   }`}
                 >
-                  <span className="block font-medium text-slate-900">
+                  <span className="block font-medium text-slate-900 dark:text-slate-100">
                     {isSelected && <span aria-hidden="true">✓ </span>}
                     {place.name}
                   </span>
                   {locationUnavailable && (
-                    <span className="mt-1 block text-sm text-slate-600">
+                    <span className="mt-1 block text-sm text-slate-600 dark:text-slate-400">
                       Location unavailable
                     </span>
                   )}

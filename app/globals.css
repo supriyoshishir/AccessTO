@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
+/*
+ * Dark mode is user-controlled (ThemeContext + localStorage), not purely
+ * OS-driven, so the `dark:` variant responds to a `data-theme` attribute on
+ * <html> instead of Tailwind's default prefers-color-scheme media query.
+ * The attribute is set before hydration by an inline script in layout.tsx
+ * (reads localStorage, falling back to prefers-color-scheme) to avoid a
+ * flash of the wrong theme.
+ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f172a;
+}
+
+[data-theme="dark"] {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
 }
 
 @theme inline {
@@ -12,28 +27,30 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 /*
  * Visible focus indicator (NFR-A11Y-1): every focusable element gets a clear
  * ring, regardless of input modality. Chosen over browser default outlines
- * so contrast/thickness is consistent across browsers.
+ * so contrast/thickness is consistent across browsers. Colour is
+ * theme-aware: blue-700 fails 3:1 against dark backgrounds (~2.2-2.7:1,
+ * verified), so dark mode uses the lighter blue-400 instead.
  */
 :focus-visible {
   outline: 3px solid #1d4ed8;
   outline-offset: 2px;
   border-radius: 2px;
+}
+
+[data-theme="dark"] :focus-visible {
+  outline-color: #60a5fa;
 }
 
 /*
