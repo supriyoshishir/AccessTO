@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  quality-gate:
+    name: Typecheck, lint, test, build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      # Runs the full Vitest suite, including the jest-axe accessibility
+      # tests (__tests__/a11y.test.tsx) — accessibility is gated here, not
+      # optional (FR-9.2).
+      - name: Test
+        run: npm run test
+
+      # NEXT_PUBLIC_GOOGLE_MAPS_API_KEY / NEXT_PUBLIC_MAP_ID are read from
+      # secrets if configured; the build succeeds without them too — a
+      # missing/invalid Maps key degrades to list-only at runtime (FR-6.5),
+      # it doesn't fail the build (FR-9.3).
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{ secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
+          NEXT_PUBLIC_MAP_ID: ${{ secrets.NEXT_PUBLIC_MAP_ID }}

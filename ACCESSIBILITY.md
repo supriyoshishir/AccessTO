@@ -135,6 +135,21 @@ overflow at either width, and attempting to scroll horizontally does nothing.
 
 ## Known limitations
 
+- **Automated axe testing cannot catch placeholder-only labeling.** Verified directly (as
+  part of Phase 9, checking that a broken a11y test actually fails CI): removing
+  `SearchBar`'s `<label for>` while a `placeholder` remained produced **zero** axe
+  violations, in both `jest-axe`/jsdom and a real browser (`@axe-core/playwright`). This
+  is correct per spec, not a tooling bug — HTML-AAM explicitly lists `placeholder` as a
+  fallback accessible-name source for text inputs when no label/`aria-label`/
+  `aria-labelledby`/`title` is present, so the input technically has _a_ name. It's WCAG
+  4.1.2 (Name, Role, Value) compliant but poor practice per WCAG 3.3.2 (Labels or
+  Instructions) — placeholder text disappears once typing starts, isn't reliably styled,
+  and doesn't persist — which is exactly why FR-3.1 requires a real associated `<label>`
+  regardless of axe's silence on the point. (`<select>` elements have no such fallback —
+  the same test against `FilterPanel`'s dropdown correctly failed with
+  `select-name: Select element must have an accessible name`.) **Practical takeaway: a
+  passing axe suite is necessary but not sufficient — code review for real `<label>`
+  usage still matters, especially for text inputs.**
 - **Screen-reader testing is an accessibility-tree proxy**, not a literal NVDA/VoiceOver
   session — see above.
 - **The embedded map's internal keyboard/focus behaviour is third-party** and not fully
