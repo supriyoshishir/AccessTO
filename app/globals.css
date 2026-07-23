@@ -37,6 +37,20 @@ body {
 }
 
 /*
+ * The embedded Google Map renders marker elements positioned at their
+ * geographic coordinates, which can extend past its own clipped container
+ * at narrow widths (verified at 320px, FR-8.5) — this is third-party
+ * rendering, not something we control internally. Guarding overflow-x at
+ * the page level prevents that from ever causing horizontal page scroll,
+ * without affecting any of our own content (nothing here is intentionally
+ * wider than the viewport).
+ */
+html,
+body {
+  overflow-x: hidden;
+}
+
+/*
  * Visible focus indicator (NFR-A11Y-1): every focusable element gets a clear
  * ring, regardless of input modality. Chosen over browser default outlines
  * so contrast/thickness is consistent across browsers. Colour is
