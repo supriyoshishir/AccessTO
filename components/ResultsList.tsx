@@ -65,7 +65,7 @@ export default function ResultsList({
       )}
 
       {!loading && !error && places && places.length > 0 && (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex max-h-96 flex-col gap-2 overflow-y-auto pr-1">
           {places.map((place) => {
             const isSelected = place.id === selectedId;
             const locationUnavailable = place.lat === null || place.lng === null;

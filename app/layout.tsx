@@ -26,13 +26,12 @@ export const metadata: Metadata = {
 // Sets data-theme on <html> before hydration, from the same storage key
 // ThemeContext reads/writes — avoids a flash of the wrong theme on load.
 // Static except for interpolating the shared storage-key constant, so it's
-// safe as inline JS (no user input reaches it).
+// safe as inline JS (no user input reaches it). Light is the default for
+// first-time visitors (no stored preference) regardless of OS setting.
 const themeInitScript = `(function() {
   try {
     var stored = localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});
-    var theme = stored === "light" || stored === "dark"
-      ? stored
-      : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    var theme = stored === "light" || stored === "dark" ? stored : "light";
     document.documentElement.setAttribute("data-theme", theme);
   } catch (e) {}
 })();`;

@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 /*
- * Dark mode is user-controlled (ThemeContext + localStorage), not purely
+ * Dark mode is user-controlled (ThemeContext + localStorage), not
  * OS-driven, so the `dark:` variant responds to a `data-theme` attribute on
  * <html> instead of Tailwind's default prefers-color-scheme media query.
  * The attribute is set before hydration by an inline script in layout.tsx
- * (reads localStorage, falling back to prefers-color-scheme) to avoid a
- * flash of the wrong theme.
+ * (reads localStorage, falling back to light — the default theme) to avoid
+ * a flash of the wrong theme.
  */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 

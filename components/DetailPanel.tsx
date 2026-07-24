@@ -38,14 +38,40 @@ export default function DetailPanel({ place }: DetailPanelProps) {
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
-    if (place) {
-      headingRef.current?.focus();
+    if (!place) {
+      return;
+    }
+    const heading = headingRef.current;
+    if (!heading) {
+      return;
+    }
+    // The browser's default focus-triggered scroll only moves the minimum
+    // distance needed, which can leave the heading pinned at the very
+    // bottom edge of the viewport (reported as "jumps to the bottom of the
+    // page"). Take control instead: skip that default, then deliberately
+    // scroll the panel to the top of the viewport — a predictable,
+    // comfortable landing spot with room to read the fields below it.
+    heading.focus({ preventScroll: true });
+    // matchMedia isn't implemented in every environment (notably jsdom,
+    // used by this project's component tests) — default to treating it as
+    // "prefers reduced motion" (the safer fallback) rather than throwing.
+    const prefersReducedMotion =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        : true;
+    // scrollIntoView isn't implemented in every environment either (also
+    // jsdom) — same defensive guard.
+    if (typeof heading.scrollIntoView === "function") {
+      heading.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
     }
   }, [place]);
 
   if (!place) {
     return (
-      <p className="text-slate-600 dark:text-slate-400">
+      <p className="sticky top-4 text-slate-600 dark:text-slate-400">
         Select a record to see its details.
       </p>
     );
@@ -56,7 +82,7 @@ export default function DetailPanel({ place }: DetailPanelProps) {
   return (
     <section
       aria-labelledby="detail-panel-heading"
-      className="rounded-md border border-slate-200 p-4 dark:border-slate-700"
+      className="sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto rounded-md border border-slate-200 p-4 dark:border-slate-700"
     >
       <h2
         id="detail-panel-heading"
