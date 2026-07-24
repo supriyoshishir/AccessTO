@@ -1,0 +1,22 @@
+# Firebase App Hosting build/runtime config. See:
+# https://firebase.google.com/docs/app-hosting/configure
+
+runConfig:
+  minInstances: 0
+
+env:
+  # Client-visible by design (NEXT_PUBLIC_ prefix inlines into the browser
+  # bundle) — secured via HTTP referrer + API restriction on the key itself,
+  # not by keeping it out of the build. Needed at BUILD time because Next.js
+  # inlines NEXT_PUBLIC_ vars into the client bundle during `next build`, and
+  # at RUNTIME for the server-rendered pages that reference them.
+  - variable: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+    secret: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_MAP_ID
+    secret: NEXT_PUBLIC_MAP_ID
+    availability:
+      - BUILD
+      - RUNTIME
