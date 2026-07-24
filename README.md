@@ -6,13 +6,7 @@ An accessibility-first web app for browsing and mapping open datasets published 
 City of Toronto: an interactive Google Map and a fully keyboard/screen-reader-accessible
 list that stay in sync, with the list as the guaranteed primary path.
 
-**Live demo:** _[add the deployed Firebase App Hosting URL here]_
-
-## Screenshots
-
-_[add a screenshot or short GIF of the results list here]_
-
-_[add a screenshot or short GIF of the synced map view here]_
+**Live demo:** _[https://accesstoproject--accessto.us-east4.hosted.app/]_
 
 ## Tech stack
 
