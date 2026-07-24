@@ -1,18 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { prettifyLabel } from "@/lib/formatLabel";
 import type { Place } from "@/lib/types";
 
 export interface DetailPanelProps {
   place: Place | null;
-}
-
-function prettifyLabel(key: string): string {
-  const spaced = key
-    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
-    .trim();
-  return spaced.charAt(0).toUpperCase() + spaced.slice(1);
 }
 
 function formatFieldValue(value: unknown): string {
@@ -71,7 +64,7 @@ export default function DetailPanel({ place }: DetailPanelProps) {
 
   if (!place) {
     return (
-      <p className="sticky top-4 text-slate-600 dark:text-slate-400">
+      <p className="sticky top-4 rounded-md border border-dashed border-slate-300 p-6 text-center text-slate-600 dark:border-slate-600 dark:text-slate-400">
         Select a record to see its details.
       </p>
     );

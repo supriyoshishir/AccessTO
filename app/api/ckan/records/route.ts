@@ -43,7 +43,15 @@ export async function GET(request: NextRequest) {
     }
 
     const records = await searchDatastore(resource.id, limit);
-    return NextResponse.json({ resourceId: resource.id, records });
+    // See the matching comment in app/api/ckan/search/route.ts.
+    return NextResponse.json(
+      { resourceId: resource.id, records },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+        },
+      },
+    );
   } catch (error) {
     if (error instanceof CkanApiError) {
       return NextResponse.json(

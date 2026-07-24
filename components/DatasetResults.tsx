@@ -59,7 +59,7 @@ export default function DatasetResults({
       </p>
 
       {!hasSearched && (
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="rounded-md border border-dashed border-slate-300 p-6 text-center text-slate-600 dark:border-slate-600 dark:text-slate-400">
           Search for a dataset to get started.
         </p>
       )}

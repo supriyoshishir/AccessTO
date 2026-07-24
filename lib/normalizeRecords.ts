@@ -1,3 +1,4 @@
+import { isRecord } from "@/lib/guards";
 import type { DatastoreRecord, Place } from "@/lib/types";
 
 const LAT_FIELD_CANDIDATES = ["lat", "latitude", "y"];
@@ -57,10 +58,6 @@ function isValidLat(value: number): boolean {
 
 function isValidLng(value: number): boolean {
   return value >= -180 && value <= 180;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
 }
 
 interface Coordinates {

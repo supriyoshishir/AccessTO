@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { isRecord } from "@/lib/guards";
 import type { CkanPackage } from "@/lib/types";
 
 export interface UseDatasetSearchResult {
@@ -21,10 +22,6 @@ interface SearchErrorBody {
 }
 
 const GENERIC_ERROR_MESSAGE = "Something went wrong while searching. Please try again.";
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
-}
 
 function isSearchSuccessBody(value: unknown): value is SearchSuccessBody {
   return isRecord(value) && Array.isArray(value.packages);

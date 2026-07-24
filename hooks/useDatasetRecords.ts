@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { isRecord } from "@/lib/guards";
 import { normalizeRecords } from "@/lib/normalizeRecords";
 import type { DatastoreRecord, Place } from "@/lib/types";
 
@@ -27,10 +28,6 @@ interface FetchResult {
 
 const GENERIC_ERROR_MESSAGE =
   "Something went wrong while loading records. Please try again.";
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
-}
 
 function isRecordsSuccessBody(value: unknown): value is RecordsSuccessBody {
   return isRecord(value) && Array.isArray(value.records);

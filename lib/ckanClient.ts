@@ -1,3 +1,4 @@
+import { isRecord } from "@/lib/guards";
 import type {
   CkanDatastoreSearchResult,
   CkanEnvelope,
@@ -18,10 +19,6 @@ export class CkanApiError extends Error {
     super(message, options);
     this.name = "CkanApiError";
   }
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
 }
 
 function isCkanEnvelope(value: unknown): value is CkanEnvelope<unknown> {

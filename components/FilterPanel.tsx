@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useMemo } from "react";
+import { prettifyLabel } from "@/lib/formatLabel";
 import type { Place } from "@/lib/types";
 
 export interface CategoricalFieldInfo {
@@ -17,14 +18,6 @@ const MIN_DISTINCT_VALUES = 2;
 const PREFERRED_MIN_DISTINCT_VALUES = 3;
 const MAX_DISTINCT_VALUES = 40;
 const MAX_AVERAGE_VALUE_LENGTH = 40;
-
-function prettifyLabel(key: string): string {
-  const spaced = key
-    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
-    .trim();
-  return spaced.charAt(0).toUpperCase() + spaced.slice(1);
-}
 
 /**
  * Datasets vary in shape, so rather than hardcoding a field name (e.g.

@@ -28,7 +28,20 @@ export async function GET(request: NextRequest) {
 
   try {
     const packages = await searchPackages(q, rows);
-    return NextResponse.json({ packages });
+    // Matches the server-side CKAN fetch's own revalidate window (see
+    // lib/ckanClient.ts) — lets the browser skip re-hitting this route
+    // entirely for an identical query, not just skip re-querying CKAN
+    // (NFR-PERF-1: "no redundant client refetching of unchanged queries").
+    // Error responses are deliberately left uncached below, so a
+    // transient failure doesn't get replayed for the next hour.
+    return NextResponse.json(
+      { packages },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+        },
+      },
+    );
   } catch (error) {
     if (error instanceof CkanApiError) {
       return NextResponse.json(

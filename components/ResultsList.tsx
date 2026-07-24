@@ -45,7 +45,7 @@ export default function ResultsList({
       </p>
 
       {!hasLoaded && (
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="flex h-96 items-center justify-center rounded-md border border-dashed border-slate-300 p-6 text-center text-slate-600 dark:border-slate-600 dark:text-slate-400">
           Select a dataset above to see its records.
         </p>
       )}
